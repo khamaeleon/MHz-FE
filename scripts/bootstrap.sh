@@ -19,6 +19,7 @@ npx --yes create-expo-app@latest "$TMP/app" --yes --no-install
 cp "$TMP/app/package.json" .
 npm pkg set name=mhz-fe main=index.js
 npm pkg delete scripts.reset-project || true
+npm pkg set scripts.go="expo start --go" scripts.ios:dev="expo run:ios" scripts.android:dev="expo run:android"
 
 echo "2/3 기본 라이브러리 설치"
 npm install
@@ -26,7 +27,7 @@ npm install
 echo "3/3 메가헤르츠에 필요한 라이브러리 설치 (SDK에 맞는 버전으로)"
 npx expo install \
   expo-router expo-splash-screen expo-status-bar expo-constants expo-linking \
-  expo-linear-gradient expo-blur expo-dev-client \
+  expo-linear-gradient expo-blur expo-dev-client expo-audio \
   react-native-safe-area-context react-native-screens \
   react-native-gesture-handler react-native-reanimated \
   @react-navigation/bottom-tabs @expo/vector-icons \

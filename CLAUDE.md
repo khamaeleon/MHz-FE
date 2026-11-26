@@ -9,7 +9,7 @@ KBS·MBC·SBS 라디오를 한 앱에서 듣는 React Native(Expo) 앱. 레퍼�
 ## 작업 규칙
 
 - 이미지 생성처럼 ChatGPT가 맡는 게 적절한 작업은 ChatGPT(OpenAI API)에 넘긴다: `/chatgpt-image` 명령 또는 `node scripts/chatgpt-image.mjs` 사용. API 키는 사용자의 환경변수 `OPENAI_API_KEY`로만 쓰고, 파일·커밋에 절대 넣지 않는다.
-- 오디오 라이브러리는 `src/player/engine.ts` 한 곳에서만 다룬다(교체 대비).
+- 오디오는 `src/player/engine.ts`(엔진 선택)를 통해서만 다룬다. 개발 빌드는 `engine.native.ts`(react-native-track-player), Expo Go는 `engine.expo-go.ts`(expo-audio, 확인용). track-player 는 이 두 곳과 `service.ts`, `index.js`의 조건부 require 외에는 import 하지 않는다(Expo Go 에서 앱이 죽음).
 - 방송사 스트림 URL은 만료되므로 캐시하지 말고 재생할 때마다 `src/api/stream.ts`로 새로 받는다.
 - 즐겨찾기·설정은 기기 저장(`src/store/prefs.ts`). MVP에는 로그인이 없다.
 
@@ -17,7 +17,8 @@ KBS·MBC·SBS 라디오를 한 앱에서 듣는 React Native(Expo) 앱. 레퍼�
 
 ```bash
 bash scripts/bootstrap.sh   # 처음 한 번 (package.json 없을 때)
-npx expo run:ios --device   # Expo Go 불가 — 개발 빌드 필요
+npx expo run:ios --device   # 개발 빌드 (백그라운드·잠금화면 포함)
+npm run go                  # Expo Go 확인 모드 (백그라운드·잠금화면 없음)
 ```
 
 ## 현재 상태 (2026-11-26)

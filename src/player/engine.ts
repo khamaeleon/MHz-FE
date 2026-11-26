@@ -1,77 +1,20 @@
-import TrackPlayer, {
-  AppKilledPlaybackBehavior,
-  Capability,
-  TrackType,
-} from 'react-native-track-player';
-
-import { getStreamUrl } from '../api/stream';
-import { BROADCASTER_LABEL, type Channel } from '../data/channels';
+import { isExpoGo } from './env';
+import type { Engine } from './types';
 
 /**
- * react-native-track-player를 감싸는 유일한 파일.
- * 오디오 라이브러리를 바꾸게 되면(예: expo-audio) 이 파일만 고치면 된다.
+ * 오디오 엔진 선택.
+ * - 개발 빌드·실제 앱: react-native-track-player (engine.native.ts)
+ * - Expo Go: expo-audio (engine.expo-go.ts) — 화면·재생 확인용
+ *
+ * require 를 조건문 안에 두어, Expo Go 에서는 track-player 모듈 코드가 아예 실행되지 않게 한다.
  */
+const engine: Engine = isExpoGo
+  ? require('./engine.expo-go').default
+  : require('./engine.native').default;
 
-const ARTWORK = require('../../assets/icon.png');
-
-let setupPromise: Promise<void> | null = null;
-
-export function setupPlayer(): Promise<void> {
-  if (!setupPromise) {
-    setupPromise = (async () => {
-      try {
-        await TrackPlayer.setupPlayer({ autoHandleInterruptions: true });
-      } catch (e) {
-        // 핫 리로드 등으로 이미 초기화된 경우는 무시
-        if (!String((e as Error)?.message ?? e).includes('already been initialized')) throw e;
-      }
-      await TrackPlayer.updateOptions({
-        android: {
-          appKilledPlaybackBehavior: AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
-        },
-        capabilities: [
-          Capability.Play,
-          Capability.Pause,
-          Capability.Stop,
-          Capability.SkipToNext,
-          Capability.SkipToPrevious,
-        ],
-        compactCapabilities: [Capability.Play, Capability.Pause, Capability.SkipToNext],
-      });
-    })().catch((e) => {
-      setupPromise = null;
-      throw e;
-    });
-  }
-  return setupPromise;
-}
-
-/**
- * 채널의 새 스트림 URL을 받아 재생한다.
- * isLatest()가 false면 사용자가 그 사이 다른 채널을 눌렀다는 뜻이라 아무것도 하지 않는다.
- */
-export async function playStream(channel: Channel, isLatest: () => boolean): Promise<void> {
-  await setupPlayer();
-  const url = await getStreamUrl(channel);
-  if (!isLatest()) return;
-  await TrackPlayer.reset();
-  await TrackPlayer.add({
-    id: channel.id,
-    url,
-    type: TrackType.HLS,
-    title: channel.name,
-    artist: `${BROADCASTER_LABEL[channel.broadcaster]} · ${channel.frequency}MHz`,
-    artwork: ARTWORK,
-    isLiveStream: true,
-  });
-  if (!isLatest()) return;
-  await TrackPlayer.play();
-}
-
-export async function pauseStream(): Promise<void> {
-  await TrackPlayer.pause();
-}
-
-export async function stopStream(): Promise<void> {
-  await TrackPlayer.reset();
-}
+export const setupPlayer = () => engine.setup();
+export const playStream = engine.play;
+export const pauseStream = () => engine.pause();
+export const stopStream = () => engine.stop();
+export const isStreamActive = () => engine.isActive();
+export const useEngineStatus = engine.useStatus;

@@ -16,7 +16,15 @@ npx expo run:ios --device     # 연결된 아이폰에서 실행
 
 `bootstrap.sh`가 만든 `package.json`, `package-lock.json`은 커밋해 두세요. 그 다음부터는 `npm install`만 하면 됩니다.
 
-> 오디오 라이브러리(react-native-track-player)는 네이티브 모듈이라 **Expo Go 앱에서는 동작하지 않아요.** 꼭 `npx expo run:ios`(개발 빌드)로 실행하세요.
+### Expo Go 앱으로 빠르게 확인
+
+```bash
+npm run go        # = npx expo start --go, 휴대폰의 Expo Go 앱으로 QR 스캔
+```
+
+Expo Go에서는 실제 재생 엔진(react-native-track-player)을 쓸 수 없어서 **확인 모드(expo-audio)**로 재생돼요. 화면·채널 재생·즐겨찾기는 확인할 수 있지만 **백그라운드 재생, 잠금화면·이어폰 버튼은 동작하지 않아요.** 이 기능은 개발 빌드(`npx expo run:ios`)에서 확인하세요.
+
+이미 bootstrap을 실행했다면 한 번만 추가 설치하세요: `npx expo install expo-audio && npm pkg set scripts.go="expo start --go"`
 
 ## 1단계 재생 검증 체크리스트
 

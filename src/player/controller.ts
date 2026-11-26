@@ -1,11 +1,10 @@
 import NetInfo from '@react-native-community/netinfo';
 import { Alert } from 'react-native';
-import TrackPlayer, { State } from 'react-native-track-player';
 
 import { CHANNELS, getChannel } from '../data/channels';
 import { usePlayerStore } from '../store/player';
 import { usePrefs } from '../store/prefs';
-import { pauseStream, playStream, stopStream } from './engine';
+import { isStreamActive, pauseStream, playStream, stopStream } from './engine';
 
 /** 화면과 잠금화면(service.ts)이 같이 쓰는 재생 명령 모음 */
 
@@ -69,9 +68,7 @@ export async function stop() {
 }
 
 export async function togglePlay() {
-  const { state } = await TrackPlayer.getPlaybackState();
-  const active =
-    state === State.Playing || state === State.Buffering || state === State.Loading;
+  const active = await isStreamActive();
   if (active || usePlayerStore.getState().loading) await pause();
   else await resume(true);
 }

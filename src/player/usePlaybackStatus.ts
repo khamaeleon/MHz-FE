@@ -1,12 +1,8 @@
-import { State, usePlaybackState } from 'react-native-track-player';
-
 import { usePlayerStore } from '../store/player';
+import { useEngineStatus } from './engine';
 
 export function usePlaybackStatus() {
-  const { state } = usePlaybackState();
+  const { isPlaying, isBuffering } = useEngineStatus();
   const loading = usePlayerStore((s) => s.loading);
-  return {
-    isPlaying: state === State.Playing,
-    isBuffering: loading || state === State.Buffering || state === State.Loading,
-  };
+  return { isPlaying, isBuffering: loading || isBuffering };
 }
