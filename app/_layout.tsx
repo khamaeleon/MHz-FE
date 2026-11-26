@@ -42,7 +42,8 @@ export default function RootLayout() {
           <Stack.Screen name="(tabs)" />
           <Stack.Screen
             name="player"
-            options={{ presentation: 'fullScreenModal', animation: 'slide_from_bottom' }}
+            // 모달로 띄우면 iOS 에서 안전 영역(상태바) 값이 0 이 되는 경우가 있어 일반 화면 + 아래에서 올라오는 전환으로 띄운다
+            options={{ animation: 'slide_from_bottom', gestureDirection: 'vertical' }}
           />
           <Stack.Screen name="favorites" />
         </Stack>

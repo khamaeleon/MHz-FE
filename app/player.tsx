@@ -3,7 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { initialWindowMetrics, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ChannelArt } from '../src/components/ChannelArt';
 import { Equalizer } from '../src/components/Equalizer';
@@ -23,21 +23,25 @@ export default function PlayerScreen() {
   const toggleFavorite = usePrefs((s) => s.toggleFavorite);
   const { isPlaying, isBuffering } = usePlaybackStatus();
   const [tab, setTab] = useState<Tab>('next');
+  const insets = useSafeAreaInsets();
+  // 혹시 안전 영역 값이 0 으로 오더라도 앱 시작 시 측정한 값으로 보정
+  const top = Math.max(insets.top, initialWindowMetrics?.insets.top ?? 0);
+  const bottom = Math.max(insets.bottom, initialWindowMetrics?.insets.bottom ?? 0);
 
   if (!channel) {
     return (
-      <SafeAreaView style={[styles.screen, styles.center]}>
+      <View style={[styles.screen, styles.center, { paddingTop: top, paddingBottom: bottom }]}>
         <Text style={styles.emptyTitle}>재생 중인 채널이 없어요</Text>
         <Pressable onPress={() => router.back()} style={styles.closeButton}>
           <Text style={styles.closeText}>닫기</Text>
         </Pressable>
-      </SafeAreaView>
+      </View>
     );
   }
 
   return (
     <LinearGradient colors={[`${channel.colors[0]}99`, colors.bg, colors.bg]} style={styles.screen}>
-      <SafeAreaView style={{ flex: 1 }}>
+      <View style={{ flex: 1, paddingTop: top, paddingBottom: bottom }}>
         <View style={styles.header}>
           <Pressable hitSlop={10} onPress={() => router.back()} style={styles.headerButton}>
             <Ionicons name="chevron-down" size={20} color="#FFFFFF" />
@@ -110,7 +114,7 @@ export default function PlayerScreen() {
             )}
           </View>
         </View>
-      </SafeAreaView>
+      </View>
     </LinearGradient>
   );
 }
