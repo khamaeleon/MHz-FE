@@ -19,7 +19,7 @@ export function ScreenHeader({
       <Text style={styles.title}>{title}</Text>
       <View style={{ flex: 1 }} />
       {actions.map((a) => (
-        <Pressable key={a.icon} hitSlop={8} onPress={a.onPress} style={styles.action}>
+        <Pressable key={a.icon} hitSlop={12} onPress={a.onPress} style={styles.action}>
           <Ionicons name={a.icon} size={22} color={colors.text} />
         </Pressable>
       ))}
@@ -30,5 +30,5 @@ export function ScreenHeader({
 const styles = StyleSheet.create({
   wrap: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, height: 52 },
   title: { color: colors.text, fontSize: font.title, fontWeight: '700', marginLeft: 8 },
-  action: { marginLeft: 16 },
+  action: { marginLeft: 8, width: 40, height: 40, alignItems: 'center', justifyContent: 'center' },
 });

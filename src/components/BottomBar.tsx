@@ -23,7 +23,7 @@ export function BottomBar() {
   const pathname = usePathname();
 
   return (
-    <View pointerEvents="box-none" style={[styles.wrap, { paddingBottom: Math.max(insets.bottom, 12) }]}>
+    <View style={[styles.wrap, { paddingBottom: Math.max(insets.bottom, 12) }]}>
       <MiniPlayer />
       <BlurView intensity={40} tint="dark" style={styles.bar}>
         {TABS.map((tab) => {
@@ -47,7 +47,9 @@ export function BottomBar() {
 }
 
 const styles = StyleSheet.create({
-  wrap: { position: 'absolute', left: 16, right: 16, bottom: 0 },
+  // 절대 위치로 띄우면 iOS 에서 탭바 영역 밖 터치가 먹히지 않고 화면 버튼을 가려서,
+  // 탭바가 자기 높이를 차지하는 일반 배치로 둔다 (화면은 그 위까지만 그려짐)
+  wrap: { paddingHorizontal: 16, paddingTop: 8, backgroundColor: colors.bg },
   bar: {
     flexDirection: 'row',
     borderRadius: radius.pill,
@@ -67,5 +69,5 @@ const styles = StyleSheet.create({
   labelActive: { color: '#FFFFFF', fontWeight: '700' },
 });
 
-/** 스크롤 화면 맨 아래가 미니 플레이어·탭바에 가리지 않도록 주는 여백 */
-export const BOTTOM_BAR_SPACE = 190;
+/** 스크롤 화면 맨 아래 여백 (탭바가 자리를 차지하므로 약간만) */
+export const BOTTOM_BAR_SPACE = 24;

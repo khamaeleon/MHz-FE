@@ -35,7 +35,12 @@ export default function ScheduleScreen() {
     <SafeAreaView edges={['top']} style={styles.screen}>
       <ScreenHeader title={`${today.getFullYear()}년 ${today.getMonth() + 1}월`} />
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.channels}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.channelsScroll}
+        contentContainerStyle={styles.channels}
+      >
         {CHANNELS.map((c) => {
           const selected = c.id === channelId;
           return (
@@ -79,6 +84,8 @@ export default function ScheduleScreen() {
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.bg },
+  // 가로 ScrollView 는 기본으로 세로 공간을 다 차지해서 아래 요소를 밀어내므로 늘어나지 않게 고정
+  channelsScroll: { flexGrow: 0, flexShrink: 0 },
   channels: { paddingHorizontal: 16, gap: 10, paddingVertical: 8 },
   logo: { width: 56, height: 56, borderRadius: 28, padding: 3, borderWidth: 2, borderColor: 'transparent' },
   logoSelected: { borderColor: colors.primary },
