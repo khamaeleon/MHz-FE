@@ -7,10 +7,20 @@ import type { Engine } from './types';
  * - Expo Go: expo-audio (engine.expo-go.ts) — 화면·재생 확인용
  *
  * require 를 조건문 안에 두어, Expo Go 에서는 track-player 모듈 코드가 아예 실행되지 않게 한다.
+ * 감지가 빗나가 track-player 를 불러오다 실패해도 expo-audio 로 넘어간다.
  */
-const engine: Engine = isExpoGo
-  ? require('./engine.expo-go').default
-  : require('./engine.native').default;
+function loadEngine(): Engine {
+  if (!isExpoGo) {
+    try {
+      return require('./engine.native').default;
+    } catch (e) {
+      console.warn('[MHz] track-player 를 불러오지 못해 expo-audio 확인 모드로 전환합니다.', e);
+    }
+  }
+  return require('./engine.expo-go').default;
+}
+
+const engine = loadEngine();
 
 export const setupPlayer = () => engine.setup();
 export const playStream = engine.play;
