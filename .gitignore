@@ -1,0 +1,26 @@
+node_modules/
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# 네이티브 폴더는 expo prebuild / run:ios 가 매번 만든다
+ios/
+android/
+
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+*.log
+
+.DS_Store
+*.pem
+
+.env*.local

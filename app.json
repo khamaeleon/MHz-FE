@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "메가헤르츠",
+    "slug": "mhz",
+    "version": "1.0.0",
+    "scheme": "mhz",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#0E0E12",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.yourname.mhz",
+      "infoPlist": {
+        "UIBackgroundModes": ["audio"]
+      }
+    },
+    "android": {
+      "package": "com.yourname.mhz",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0E0E12"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 220,
+          "resizeMode": "contain",
+          "backgroundColor": "#0E0E12"
+        }
+      ]
+    ]
+  }
+}
