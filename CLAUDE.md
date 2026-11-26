@@ -3,7 +3,7 @@
 KBS·MBC·SBS 라디오를 한 앱에서 듣는 React Native(Expo) 앱. 레퍼런스 앱은 modio(화면 구성·흐름만 참고, 이름·로고·디자인은 독자적으로).
 
 - 기획서: https://claude.ai/artifact/X23WWAswXHuJ1cTNDRHcHt (화면 명세, API, DB, 로드맵, 미결 사항)
-- 백엔드: https://github.com/khamaeleon/MHz-BE (Supabase)
+- 백엔드: https://github.com/khamaeleon/MHz-BE (Node.js API + PostgreSQL, docker-compose로 배포됨. Supabase는 쓰지 않음)
 - 사용자는 한국어로 소통한다. 답변·커밋 메시지·주석은 한국어.
 
 ## 작업 규칙
@@ -22,11 +22,13 @@ npx expo run:ios --device   # 개발 빌드 (백그라운드·잠금화면 포�
 npm run go                  # Expo Go 확인 모드 (백그라운드·잠금화면 없음)
 ```
 
-## 현재 상태 (2026-11-26)
+## 현재 상태 (2026-11-26 저녁)
 
-- 완료: LIVE 그리드, 미니/풀스크린 플레이어, 백그라운드 재생·잠금화면 제어, 즐겨찾기, 마이페이지 설정, 편성 탭 UI, MHz 아이콘(코드로 만든 임시 워드마크)
-- 아직 실기기 빌드·재생 검증을 못 했다 → README의 "1단계 재생 검증 체크리스트"부터
-- 다음: ChatGPT로 로고·아이콘 다듬기, 백엔드 `/channels`·`/channels/:id/now` 연결, 검색·프로그램 상세(P1)
+- 완료: LIVE 그리드, 미니/풀스크린 플레이어, 백그라운드 재생·잠금화면 제어(개발 빌드), 즐겨찾기, 마이페이지 설정, 편성 탭 UI, MHz 아이콘(코드로 만든 임시 워드마크), Expo Go 확인 모드
+- Expo SDK 58. 사용자는 아이폰 + Expo Go(`npx expo start --go --clear`)로 확인 중
+- 오늘 고친 것: `.native` 파일명 충돌, 탭바 navigation undefined(→ expo-router 주소 기반 이동), 하단 바 겹침(절대 위치 → 일반 배치), 플레이어 상태바 겹침(모달 → 일반 화면 + 안전 영역 직접 적용)
+- 아직 확인 못 함: 8개 채널 실제 재생 여부, 개발 빌드에서 백그라운드·잠금화면
+- 다음: 채널 재생 확인 → ChatGPT로 로고 다듬기(/chatgpt-image) → API 도메인·HTTPS 붙인 뒤 `/channels`·`/channels/:id/now` 연결 → 검색·프로그램 상세(P1)
 
 ## 채널 스트림 API (출처: https://blog.bsod.kr/137)
 
