@@ -6,7 +6,7 @@ import { colors } from '../../src/theme';
 export default function TabsLayout() {
   return (
     <Tabs
-      tabBar={(props) => <BottomBar {...props} />}
+      tabBar={() => <BottomBar />}
       screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: colors.bg } }}
     >
       <Tabs.Screen name="index" options={{ title: 'LIVE' }} />
